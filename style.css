@@ -1,5 +1,8 @@
 :root {
   --gutter: 1rem;
+
+  --clr-bg: #988b8e;
+  --clr-accent: #e5c3d2;
 }
 
 /* Box sizing rules */
@@ -7,6 +10,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  /* outline: 1px solid crimson; */
 }
 
 /* Remove default margin */
@@ -81,8 +85,48 @@ select {
   }
 }
 
+h1 {
+  position: relative;
+  margin-bottom: 1em;
+  opacity: 0.8;
+}
+
+h1::after {
+  content: '';
+  background-color: var(--clr-accent);
+  width: 20px;
+  height: 3px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 form {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  gap: 0.5em;
+  width: 50%;
+  background-color: var(--clr-bg);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button {
+  border: none;
+  padding: 0.5em 1.5em;
+  cursor: pointer;
+}
+
+table button {
+  width: max-content;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+input {
+  border: none;
 }
