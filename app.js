@@ -1,5 +1,3 @@
-// TODO: Bug fix - when table is removed the 'New Book' button doesn't work
-
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
@@ -30,26 +28,51 @@ function toggleBookRead(id) {
 
 function showBooks() {
   let table = document.querySelector('table');
+  let noBooksMsg = document.querySelector('.no-books');
+
   if (table === null) {
     table = document.createElement('table');
+    if (noBooksMsg) noBooksMsg.remove();
+  } else {
+    table.innerHTML = '';
   }
-  table.innerHTML = '';
   const main = document.querySelector('main');
 
-  table.innerHTML += `<thead><tr style="text-align: left;"><th hidden>id</th><th>Title</th><th>Author</th><th>Pages</th><th>Read?</th></tr></thead><tdbody>`;
-  let bookRows = '';
   if (myLibrary.length > 0) {
+    let bookRows = '';
+    const tableHeading = `<thead>
+                              <tr style="text-align: left;">
+                                <th hidden>id</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Pages</th>
+                                <th>Read?</th>
+                              </tr>
+                            </thead>
+                          <tbody>`;
+    table.innerHTML += tableHeading;
     myLibrary.forEach(
       (book, index) =>
-        (bookRows += `<tr><td hidden>${index}</td><td>${book.title}</td><td>${book.author}</td><td style="text-align: right;">${book.pages}</td><td onclick='toggleBookRead(${index})'>${book.read}</td><td><button onclick='deleteBookFromLibrary(${index})'>x</button></td></tr>`)
+        (bookRows += `<tr>
+                        <td hidden>${index}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td style="text-align: right;">${book.pages}</td>
+                        <td onclick='toggleBookRead(${index})'>${book.read}</td>
+                        <td><button onclick='deleteBookFromLibrary(${index})'>x</button></td>
+                    </tr>`)
     );
-    bookRows += '</body>';
+    bookRows += '</tbody>';
     table.innerHTML += bookRows;
     main.appendChild(table);
   } else {
     document.querySelector('table').remove();
-    main.innerHTML +=
+    noBooksMsg =
       "There are no books in your library. Click 'New Book' to add one";
+    const p = document.createElement('p');
+    p.setAttribute('class', 'no-books');
+    p.textContent = noBooksMsg;
+    main.appendChild(p);
   }
 }
 
@@ -88,9 +111,7 @@ document.querySelector('.add-book-btn').addEventListener('click', (e) => {
 });
 
 function clearForm() {
-  document.getElementsByTagName('form')[0].reset();
+  form.reset();
 }
 
-if (myLibrary.length > 0) {
-  showBooks();
-}
+showBooks();
